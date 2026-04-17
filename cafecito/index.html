@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafecito o Miedo — Menú</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  
+  <!-- ===== TABS ===== -->
+  <div class="tabs">
+    <button class="tab active" onclick="showPanel('bebidas', this)">Bebidas</button>
+    <button class="tab"        onclick="showPanel('comidas', this)">Comidas</button>
+    <button class="tab"        onclick="showPanel('historial', this)">Historial</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- BEBIDAS PANEL                                                 -->
+  <!-- ============================================================ -->
+  <div id="bebidas" class="menu-panel active">
+
+    <!-- ☕ CAFÉS -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">☕ Cafés</span>
+      <span class="line right"></span>
+    </div>
+
+    <div class="cat-grid">
+      <!-- Calientes -->
+      <div class="cat-block">
+        <div class="cat-block-title">Calientes</div>
+        <div class="item" data-name="Americano" data-price="5">
+          <span class="item-check">✦</span><span class="item-name">Americano</span><span class="item-dots"></span><span class="item-price">5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Campesino" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Campesino</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Expreso Cubano" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Expreso Cubano</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Espresso" data-price="4">
+          <span class="item-check">✦</span><span class="item-name">Espresso</span><span class="item-dots"></span><span class="item-price">4 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Espresso Doble" data-price="5">
+          <span class="item-check">✦</span><span class="item-name">Espresso Doble</span><span class="item-dots"></span><span class="item-price">5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <!-- Fríos -->
+      <div class="cat-block">
+        <div class="cat-block-title">Fríos</div>
+        <div class="item" data-name="Affogato" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Affogato</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Bombón" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Bombón</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Cappuccino Frío" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Cappuccino</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Frappe de Café" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Frappe de Café</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Latte Frío" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Latte</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Té Chai Frío" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Té Chai</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-grid">
+      <!-- Con Leche -->
+      <div class="cat-block">
+        <div class="cat-block-title">Con Leche</div>
+        <div class="item" data-name="Cappuccino con Leche" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Cappuccino</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Latte con Leche" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Latte</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Mochaccino" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Mochaccino</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Té Chai con Leche" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Té Chai</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <!-- Con Licor -->
+      <div class="cat-block">
+        <div class="cat-block-title">Con Licor</div>
+        <div class="item" data-name="Cappuccino con Licor" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Cappuccino</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Carajillo" data-price="11">
+          <span class="item-check">✦</span><span class="item-name">Carajillo</span><span class="item-dots"></span><span class="item-price">11 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Latte con Licor" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Latte</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🍵 BEBIDAS CALIENTES -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🍵 Bebidas Calientes</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Agua de panela con queso" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Agua de panela con queso</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Aromáticas" data-price="3">
+          <span class="item-check">✦</span><span class="item-name">Aromáticas</span><span class="item-dots"></span><span class="item-price">3 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Canelazo" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Canelazo</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Canelazo con licor" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Canelazo con licor</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Chocolate" data-price="5">
+          <span class="item-check">✦</span><span class="item-name">Chocolate</span><span class="item-dots"></span><span class="item-price">5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Copa de vino" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Copa de vino</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block">
+        <div class="item" data-name="Infusión de frutas" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Infusión de frutas</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Infusión frutas deshidratadas" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Infusión frutas desidratadas</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Maicenita (trad. o arequipe)" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Maicenita (trad. o arequipe)</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Migao abuela (choc. o milo)" data-price="16">
+          <span class="item-check">✦</span><span class="item-name">Migao abuela (choc. o milo)</span><span class="item-dots"></span><span class="item-price">16 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Migao abuela maicenita" data-price="17">
+          <span class="item-check">✦</span><span class="item-name">Migao abuela maicenita</span><span class="item-dots"></span><span class="item-price">17 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Milo Caliente" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Milo</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🥤 BEBIDAS FRÍAS -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🥤 Bebidas Frías</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Agua con gas" data-price="4">
+          <span class="item-check">✦</span><span class="item-name">Agua con gas</span><span class="item-dots"></span><span class="item-price">4 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Agua sin gas" data-price="3">
+          <span class="item-check">✦</span><span class="item-name">Agua sin gas</span><span class="item-dots"></span><span class="item-price">3 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Jugos agua" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Jugos agua (marac./mora/lulo/mango)</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Jugos leche" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Jugos leche (marac./mora/lulo/mango)</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Limonada" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Limonada (nat./bras./coco/cherry/marac.)</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Milo Frío" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Milo</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Soda" data-price="3.5">
+          <span class="item-check">✦</span><span class="item-name">Soda</span><span class="item-dots"></span><span class="item-price">3.5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block">
+        <div class="item" data-name="Sodas saborizadas" data-price="11">
+          <span class="item-check">✦</span><span class="item-name">Sodas saborizadas (frutas rojas/amar./verdes)</span><span class="item-dots"></span><span class="item-price">11 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Tinto de verano" data-price="13">
+          <span class="item-check">✦</span><span class="item-name">Tinto de verano</span><span class="item-dots"></span><span class="item-price">13 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Té frío" data-price="4">
+          <span class="item-check">✦</span><span class="item-name">Té frío</span><span class="item-dots"></span><span class="item-price">4 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Gaseosas" data-price="4">
+          <span class="item-check">✦</span><span class="item-name">Gaseosas</span><span class="item-dots"></span><span class="item-price">4 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Tamarindo" data-price="4.5">
+          <span class="item-check">✦</span><span class="item-name">Tamarindo</span><span class="item-dots"></span><span class="item-price">4.5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Coca Cola" data-price="5">
+          <span class="item-check">✦</span><span class="item-name">Coca Cola</span><span class="item-dots"></span><span class="item-price">5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Michelados" data-price="2.5">
+          <span class="item-check">✦</span><span class="item-name">Michelados</span><span class="item-dots"></span><span class="item-price">2.5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🍺 CERVEZAS -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🍺 Cervezas</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Corona" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Corona</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Club Colombia" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Club Colombia</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Light" data-price="5">
+          <span class="item-check">✦</span><span class="item-name">Light</span><span class="item-dots"></span><span class="item-price">5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Tres Cordilleras" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Tres Cordilleras</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block"></div>
+    </div>
+
+    <!-- 🥃 SHOTS -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🥃 Shots</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Shot de brandy" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Shot de brandy</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Shot de aguardiente" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Shot de aguardiente</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Shot de Baileys" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Shot de Baileys</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Shot de Whisky" data-price="15">
+          <span class="item-check">✦</span><span class="item-name">Shot de Whisky</span><span class="item-dots"></span><span class="item-price">15 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block"></div>
+    </div>
+
+  </div><!-- /bebidas -->
+
+  <!-- ============================================================ -->
+  <!-- COMIDAS PANEL                                                 -->
+  <!-- ============================================================ -->
+  <div id="comidas" class="menu-panel">
+
+    <!-- 🧀 PARA PICAR -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🧀 Para Picar</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Deditos de queso x4" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Deditos de queso x4</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Empanaditas x4" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Empanaditas x4</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Nachos mixtos" data-price="16.5">
+          <span class="item-check">✦</span><span class="item-name">Nachos mixtos</span><span class="item-dots"></span><span class="item-price">16,5 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block">
+        <div class="item" data-name="Patacones con ahogado" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Patacones con ahogado</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Papas a la francesa" data-price="6">
+          <span class="item-check">✦</span><span class="item-name">Papas a la francesa</span><span class="item-dots"></span><span class="item-price">6 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Papas en casco" data-price="9">
+          <span class="item-check">✦</span><span class="item-name">Papas en casco</span><span class="item-dots"></span><span class="item-price">9 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🍔 COMIDAS -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🍔 Comidas</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Burro de pollo" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Burro de pollo</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Burro mixto" data-price="16">
+          <span class="item-check">✦</span><span class="item-name">Burro mixto</span><span class="item-dots"></span><span class="item-price">16 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Mini hamburguesas x2" data-price="18">
+          <span class="item-check">✦</span><span class="item-name">Mini hamburguesas x2</span><span class="item-dots"></span><span class="item-price">18 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Sándwich criollo x2" data-price="17">
+          <span class="item-check">✦</span><span class="item-name">Sándwich criollo x2</span><span class="item-dots"></span><span class="item-price">17 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block">
+        <div class="item" data-name="Sándwich de pollo" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Sándwich de pollo (c/s gratinar)</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Tostadas francesas" data-price="14">
+          <span class="item-check">✦</span><span class="item-name">Tostadas francesas</span><span class="item-dots"></span><span class="item-price">14 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Waffle dulce" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Waffle dulce</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Waffle salado" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Waffle salado</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🍰 TORTAS & POSTRES -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">🍰 Tortas &amp; Postres</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="cat-block-title">Tortas</div>
+        <div class="item" data-name="Cheesecake" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Cheesecake</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Torta de Chocolate" data-price="10">
+          <span class="item-check">✦</span><span class="item-name">Chocolate</span><span class="item-dots"></span><span class="item-price">10 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Torta tradicional de la abuela" data-price="7">
+          <span class="item-check">✦</span><span class="item-name">Tradicional de la abuela</span><span class="item-dots"></span><span class="item-price">7 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Torta de Zanahoria" data-price="8">
+          <span class="item-check">✦</span><span class="item-name">Zanahoria</span><span class="item-dots"></span><span class="item-price">8 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block">
+        <div class="cat-block-title">Helado Frito</div>
+        <div class="item" data-name="Helado Frito Limón" data-price="14">
+          <span class="item-check">✦</span><span class="item-name">Limón</span><span class="item-dots"></span><span class="item-price">14 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Helado Frito Frutos Rojos" data-price="14">
+          <span class="item-check">✦</span><span class="item-name">Frutos rojos</span><span class="item-dots"></span><span class="item-price">14 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 👶 MENÚ INFANTIL -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">👶 Menú Infantil</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Mini hamburguesa + papa + hit" data-price="16">
+          <span class="item-check">✦</span><span class="item-name">Mini hamburguesa + papa + hit</span><span class="item-dots"></span><span class="item-price">16 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Nuggets de pollo + papa + hit" data-price="12">
+          <span class="item-check">✦</span><span class="item-name">Nuggets de pollo + papa + hit</span><span class="item-dots"></span><span class="item-price">12 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block"></div>
+    </div>
+
+    <!-- ➕ ADICIONALES -->
+    <div class="category-header">
+      <span class="line"></span>
+      <span class="category-name">➕ Adicionales</span>
+      <span class="line right"></span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-block">
+        <div class="item" data-name="Guacamole" data-price="3">
+          <span class="item-check">✦</span><span class="item-name">Guacamole</span><span class="item-dots"></span><span class="item-price">3 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Porción de salsa" data-price="2">
+          <span class="item-check">✦</span><span class="item-name">Porción de salsa</span><span class="item-dots"></span><span class="item-price">2 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+        <div class="item" data-name="Porción de pollo o carne" data-price="3">
+          <span class="item-check">✦</span><span class="item-name">Porción de pollo o carne</span><span class="item-dots"></span><span class="item-price">3 K</span>
+          <div class="item-qty"><button class="qty-btn minus">−</button><span class="qty-num">1</span><button class="qty-btn plus">+</button></div>
+        </div>
+      </div>
+      <div class="cat-block"></div>
+    </div>
+
+  </div><!-- /comidas -->
+
+  <!-- ============================================================ -->
+  <!-- HISTORIAL PANEL                                               -->
+  <!-- ============================================================ -->
+  <div id="historial" class="menu-panel">
+    <div id="historial-content"></div>
+  </div>
+
+
+
+</div><!-- /page -->
+
+<!-- ===== BOTÓN CARRITO ===== -->
+<button id="cart-btn" onclick="openCartModal()">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <path d="M16 10a4 4 0 01-8 0"/>
+  </svg>
+  Ver Pedido
+  <span class="cart-count" id="cart-count">0</span>
+</button>
+
+<!-- ===== MODAL: PREGUNTA REDES ===== -->
+<div class="modal-overlay" id="modal-redes">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-redes')">✕</button>
+    <p class="modal-title">✦ ¡Espera! ✦</p>
+    <div class="redes-question">
+      <p>Tu compra supera los <span class="highlight">$40.000</span>.</p>
+      <p style="margin-top:10px;">¿Ya nos sigues en redes sociales?<br><span class="highlight">¡Obtén un 5% de descuento!</span></p>
+      <div class="redes-icons-row">
+        <a class="redes-icon-sm" href="https://www.tiktok.com/@cafecito.o.miedo" target="_blank" title="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/></svg>
+        </a>
+        <a class="redes-icon-sm" href="https://www.facebook.com/share/1Ggs3SPwQo/" target="_blank" title="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a class="redes-icon-sm" href="https://www.instagram.com/cafecito.miedo" target="_blank" title="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+      </div>
+      <div class="redes-btn-row">
+        <button class="btn-gold"    onclick="applyDiscount()">✦ Sí, ya los sigo</button>
+        <button class="btn-outline" onclick="skipDiscount()">No, continuar sin descuento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: FACTURA ===== -->
+<div class="modal-overlay" id="modal-factura">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-factura')">✕</button>
+    <div id="factura-content"></div>
+    <div class="invoice-actions">
+      <button class="btn-gold"    onclick="confirmarPedido()">✦ Confirmar Pedido</button>
+      <button class="btn-outline" onclick="closeModal('modal-factura')">Seguir agregando</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: HISTORIAL DETALLE ===== -->
+<div class="modal-overlay" id="modal-historial-detail">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-historial-detail')">✕</button>
+    <div id="historial-detail-content"></div>
+    <div class="invoice-actions" style="margin-top:20px;">
+      <button class="btn-outline" onclick="closeModal('modal-historial-detail')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/javascript.js"></script>
+</body>
+</html>
