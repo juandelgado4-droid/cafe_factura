@@ -558,6 +558,31 @@
   </div>
 </div>
 
+<!-- ===== MODAL: OPCIONES DE ITEM ===== -->
+<div class="modal-overlay" id="modal-opciones">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-opciones')">✕</button>
+    <p class="modal-title" id="opciones-title">Selecciona una opción</p>
+    <div id="opciones-list" class="opciones-list"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL: MÉTODO DE PAGO ===== -->
+<div class="modal-overlay" id="modal-pago">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-pago')">✕</button>
+    <p class="modal-title">✦ Método de Pago ✦</p>
+    <div class="pago-options">
+      <button class="btn-pago" id="pago-efectivo">
+        💵<span>Efectivo</span>
+      </button>
+      <button class="btn-pago" id="pago-transferencia">
+        📲<span>Transferencia</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="js/javascript.js"></script>
 </body>
 </html>
