@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "outputDirectory": "cafecito",
+  "routes": [
+    { "src": "/api/facturas", "dest": "/api/facturas.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

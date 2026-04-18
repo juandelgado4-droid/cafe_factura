@@ -17,7 +17,7 @@ const ITEM_OPTIONS = {
 };
 
 // ─── MongoDB con Netlify Functions ────────────
-const API_URL = '/.netlify/functions/facturas';
+const API_URL = '/api/facturas';
 
 async function saveFactura(invoice) {
   const response = await fetch(API_URL, {
