@@ -893,6 +893,58 @@ body::before {
   margin-top: 3px;
   font-style: italic;
 }
+.historial-invoice-pago.no-pagado {
+  color: #e05c5c;
+  opacity: 1;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ── Selector de pago en detalle ── */
+.pago-selector-titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-align: center;
+  margin: 18px 0 10px;
+}
+.pago-selector {
+  display: flex;
+  gap: 10px;
+}
+.btn-pago-selector {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  padding: 12px 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  opacity: 0.6;
+}
+.btn-pago-selector:hover, .btn-pago-selector.activo {
+  background: var(--gold);
+  color: var(--bg);
+  opacity: 1;
+}
+.pago-registrado {
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--gold);
+}
+.pago-pendiente {
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: #e05c5c;
+}
 .historial-card-actions {
   display: flex;
   flex-direction: column;
