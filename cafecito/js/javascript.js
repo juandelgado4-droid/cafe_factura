@@ -14,7 +14,14 @@ const ITEM_OPTIONS = {
   'Limonada': ['Natural', 'Brasilera', 'Coco', 'Cherry', 'Maracuyá'],
   'Sodas saborizadas': ['Frutas rojas', 'Amarillas', 'Verdes'],
   'Sándwich de pollo': ['Con gratinar', 'Sin gratinar'],
+  'Frappe de Café': ['Frío (+$1.000)', 'Caliente'],
+  'Mochaccino': ['Frío (+$1.000)', 'Caliente'],
+  'Latte con Leche': ['Frío (+$1.000)', 'Caliente'],
+  'Milo Frío': ['Frío (+$1.000)', 'Caliente'],
 };
+
+// Items que tienen recargo de $1.000 cuando se elige "Frío"
+const FRIO_RECARGO = ['Frappe de Café', 'Mochaccino', 'Latte con Leche', 'Milo Frío'];
 
 // ─── MongoDB con Netlify Functions ────────────
 const API_URL = '/api/facturas';
@@ -132,7 +139,6 @@ function openOptionModal(el, name, options) {
 
 function selectOption(el, option) {
   el.classList.add('selected');
-  // Mostrar badge de opción en el item
   let badge = el.querySelector('.option-badge');
   if (!badge) {
     badge = document.createElement('span');
@@ -140,11 +146,19 @@ function selectOption(el, option) {
     el.querySelector('.item-qty').before(badge);
   }
   badge.textContent = option;
+
+  const baseName = el.dataset.name;
+  const basePrice = parseFloat(el.dataset.price);
+  // Aplicar recargo de 1 (=$1.000) si elige Frío en items con recargo
+  const esFrio = option.startsWith('Frío') && FRIO_RECARGO.includes(baseName);
+  const finalPrice = esFrio ? basePrice + 1 : basePrice;
+
   const existing = selectedItems.find(i => i.el === el);
   if (existing) {
     existing.option = option;
+    existing.price = finalPrice;
   } else {
-    selectedItems.push({ el, name: el.dataset.name, price: parseFloat(el.dataset.price), qty: 1, option });
+    selectedItems.push({ el, name: baseName, price: finalPrice, qty: 1, option });
   }
   updateCartBtn();
 }
@@ -516,10 +530,9 @@ function buildLinesHtml(items) {
 
 function formatPrice(val) {
   const num = parseFloat(val);
-  if (Number.isInteger(num) || num === Math.floor(num)) {
-    return `$${num.toFixed(0)}.000`;
-  }
-  return `$${num.toFixed(1).replace('.', ',')}.000`;
+  // Multiplicar por 1000 para obtener el valor real en pesos
+  const pesos = Math.round(num * 1000);
+  return '$' + pesos.toLocaleString('es-CO');
 }
 
 function formatDateTime(date) {
