@@ -202,28 +202,14 @@ function confirmarPedido() {
   if (subtotal >= 40) {
     openModal('modal-redes');
   } else {
-    openPagoModal(false);
+    finalizarPedido(false);
   }
 }
 
-function applyDiscount()  { closeModal('modal-redes'); openPagoModal(true);  }
-function skipDiscount()   { closeModal('modal-redes'); openPagoModal(false); }
+function applyDiscount()  { closeModal('modal-redes'); finalizarPedido(true);  }
+function skipDiscount()   { closeModal('modal-redes'); finalizarPedido(false); }
 
-// ─── Modal de método de pago ──────────────────
-function openPagoModal(withDiscount) {
-  const modal = document.getElementById('modal-pago');
-  document.getElementById('pago-efectivo').onclick = () => {
-    closeModal('modal-pago');
-    finalizarPedido(withDiscount, 'efectivo');
-  };
-  document.getElementById('pago-transferencia').onclick = () => {
-    closeModal('modal-pago');
-    finalizarPedido(withDiscount, 'transferencia');
-  };
-  openModal('modal-pago');
-}
-
-async function finalizarPedido(withDiscount, metodoPago) {
+async function finalizarPedido(withDiscount) {
   const now      = new Date();
   const subtotal = selectedItems.reduce((s, i) => s + i.price * i.qty, 0);
   const discount = withDiscount ? +(subtotal * 0.05).toFixed(2) : 0;
@@ -235,7 +221,7 @@ async function finalizarPedido(withDiscount, metodoPago) {
     subtotal,
     discount,
     total,
-    metodoPago
+    metodoPago: null
   };
 
   try {
@@ -263,7 +249,6 @@ function mostrarFacturaFinal(invoice) {
          <span>Descuento 5% ✦ redes sociales</span>
          <span>− ${formatPrice(invoice.discount)}</span>
        </div>` : '';
-  const pagoIcon = invoice.metodoPago === 'efectivo' ? '💵' : '📲';
 
   document.getElementById('factura-content').innerHTML = `
     <div class="invoice-header">
@@ -277,8 +262,7 @@ function mostrarFacturaFinal(invoice) {
       <span class="invoice-total-label">Total</span>
       <span class="invoice-total-amount">${formatPrice(invoice.total)}</span>
     </div>
-    <div class="invoice-pago">${pagoIcon} Pago: <strong>${invoice.metodoPago}</strong></div>
-    <p class="invoice-saved-note">✦ Factura guardada en el historial ✦</p>
+    <p class="invoice-saved-note">✦ Guardada — registra el pago en el historial ✦</p>
   `;
 
   document.querySelector('#modal-factura .invoice-actions').innerHTML = `
@@ -388,8 +372,10 @@ async function renderHistorial() {
       const timeStr   = t.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
       const preview   = inv.items.map(i => i.option ? `${i.name} (${i.option})` : i.name).join(', ');
       const invoiceId = inv._id || inv.id;
-      const pagoIcon  = inv.metodoPago === 'transferencia' ? '📲' : '💵';
-      const pagoLabel = inv.metodoPago || 'sin registrar';
+      const pagado = inv.metodoPago === 'efectivo' || inv.metodoPago === 'transferencia';
+      const pagoIcon  = inv.metodoPago === 'transferencia' ? '📲' : inv.metodoPago === 'efectivo' ? '💵' : '⚠';
+      const pagoLabel = inv.metodoPago || 'No pagado';
+      const pagoClass = pagado ? 'historial-invoice-pago' : 'historial-invoice-pago no-pagado';
       html += `
         <div class="historial-invoice-card">
           <div class="historial-invoice-content" onclick="showHistorialDetail('${invoiceId}')">
@@ -398,10 +384,9 @@ async function renderHistorial() {
               <span class="historial-invoice-total">${formatPrice(inv.total)}</span>
             </div>
             <div class="historial-invoice-items">${preview}</div>
-            <div class="historial-invoice-pago">${pagoIcon} ${pagoLabel}</div>
+            <div class="${pagoClass}">${pagoIcon} ${pagoLabel}</div>
           </div>
           <div class="historial-card-actions">
-            <button class="historial-pago-btn" onclick="cambiarPago('${invoiceId}', '${inv.metodoPago || ''}', event)">💳</button>
             <button class="historial-delete-btn" onclick="eliminarFactura('${invoiceId}')">✕</button>
           </div>
         </div>`;
@@ -416,7 +401,7 @@ async function cambiarPago(id, pagoActual, e) {
   e.stopPropagation();
   const nuevo = pagoActual === 'efectivo' ? 'transferencia' : 'efectivo';
   try {
-    await updateFacturaPago(id, nuevo);
+    await updateFacturaPago(String(id), nuevo);
     renderHistorial();
   } catch (err) {
     alert('Error al actualizar el método de pago');
@@ -427,17 +412,32 @@ async function showHistorialDetail(id) {
   let inv = null;
   try {
     const all = await getAllFacturas();
-    inv = all.find(i => i._id === id || i.id === id);
+    inv = all.find(i => String(i._id) === String(id) || String(i.id) === String(id));
   } catch (err) { return; }
   if (!inv) return;
 
+  const invoiceId = String(inv._id || inv.id);
   const { linesHtml } = buildLinesHtml(inv.items);
   const discountHtml  = inv.discount > 0
     ? `<div class="invoice-discount">
          <span>Descuento 5% ✦ redes sociales</span>
          <span>− ${formatPrice(inv.discount)}</span>
        </div>` : '';
-  const pagoIcon = inv.metodoPago === 'efectivo' ? '💵' : '📲';
+  const pagoActual = inv.metodoPago || '';
+
+  // Botones de pago
+  const botonesHtml = `
+    <div class="pago-selector-titulo">¿Cómo pagó?</div>
+    <div class="pago-selector">
+      <button class="btn-pago-selector ${pagoActual === 'efectivo' ? 'activo' : ''}" id="btn-pago-efectivo">
+        💵 Efectivo
+      </button>
+      <button class="btn-pago-selector ${pagoActual === 'transferencia' ? 'activo' : ''}" id="btn-pago-transferencia">
+        📲 Transferencia
+      </button>
+    </div>
+    ${pagoActual ? `<div class="pago-registrado">✦ Pago registrado: <strong>${pagoActual}</strong></div>` : '<div class="pago-pendiente">⚠ Pago no registrado</div>'}
+  `;
 
   document.getElementById('historial-detail-content').innerHTML = `
     <div class="invoice-header">
@@ -451,25 +451,38 @@ async function showHistorialDetail(id) {
       <span class="invoice-total-label">Total</span>
       <span class="invoice-total-amount">${formatPrice(inv.total)}</span>
     </div>
-    <div class="invoice-pago">${pagoIcon} Pago: <strong>${inv.metodoPago || 'sin registrar'}</strong></div>
-    <div class="pago-change-row">
-      <button class="btn-outline" onclick="cambiarPagoDesdeDetalle('${inv._id || inv.id}', '${inv.metodoPago || ''}')">
-        Cambiar a ${inv.metodoPago === 'efectivo' ? 'transferencia 📲' : 'efectivo 💵'}
-      </button>
-    </div>
+    ${botonesHtml}
   `;
+
+  document.getElementById('btn-pago-efectivo').onclick = async () => {
+    await registrarPago(invoiceId, 'efectivo');
+  };
+  document.getElementById('btn-pago-transferencia').onclick = async () => {
+    await registrarPago(invoiceId, 'transferencia');
+  };
 
   openModal('modal-historial-detail');
 }
 
-async function cambiarPagoDesdeDetalle(id, pagoActual) {
-  const nuevo = pagoActual === 'efectivo' ? 'transferencia' : 'efectivo';
+async function registrarPago(id, metodoPago) {
   try {
-    await updateFacturaPago(id, nuevo);
+    await updateFacturaPago(String(id), metodoPago);
     closeModal('modal-historial-detail');
-    renderHistorial();
+    await renderHistorial();
   } catch (err) {
-    alert('Error al actualizar el método de pago');
+    alert('Error al registrar el pago');
+  }
+}
+
+async function cambiarPagoDesdeDetalle(id, pagoActual) {
+  const nuevo = pagoActual === 'efectivo' ? 'transferencia' : (pagoActual === 'transferencia' ? 'efectivo' : 'efectivo');
+  try {
+    const res = await updateFacturaPago(id, nuevo);
+    closeModal('modal-historial-detail');
+    await renderHistorial();
+  } catch (err) {
+    console.error('Error cambiando pago:', err);
+    alert('Error al actualizar el método de pago: ' + err.message);
   }
 }
 
