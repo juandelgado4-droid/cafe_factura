@@ -1,18 +1,23 @@
 /* =============================================
    CAFECITO O MIEDO — javascript.js
-   Persistencia: IndexedDB (no se borra sola)
    ============================================= */
 
 // ─── Estado de la sesión ───────────────────────
-let selectedItems = []; // { el, name, price, qty }
+let selectedItems = []; // { el, name, price, qty, option }
+
+// ─── Opciones por item ────────────────────────
+const ITEM_OPTIONS = {
+  'Migao abuela (choc. o milo)': ['Chocolate', 'Milo'],
+  'Maicenita (trad. o arequipe)': ['Tradicional', 'Arequipe'],
+  'Jugos agua': ['Maracuyá', 'Mora', 'Lulo', 'Mango'],
+  'Jugos leche': ['Maracuyá', 'Mora', 'Lulo', 'Mango'],
+  'Limonada': ['Natural', 'Brasilera', 'Coco', 'Cherry', 'Maracuyá'],
+  'Sodas saborizadas': ['Frutas rojas', 'Amarillas', 'Verdes'],
+  'Sándwich de pollo': ['Con gratinar', 'Sin gratinar'],
+};
 
 // ─── MongoDB con Netlify Functions ────────────
 const API_URL = '/.netlify/functions/facturas';
-
-async function openDB() {
-  // Ya no es necesario con MongoDB
-  return Promise.resolve();
-}
 
 async function saveFactura(invoice) {
   const response = await fetch(API_URL, {
@@ -20,8 +25,7 @@ async function saveFactura(invoice) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'save', invoice })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 }
 
 async function getAllFacturas() {
@@ -29,14 +33,7 @@ async function getAllFacturas() {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
-  const data = await response.json();
-  return data;
-}
-
-async function deleteAllFacturas() {
-  // No implementado por seguridad
-  console.warn('deleteAllFacturas no disponible');
-  return Promise.resolve();
+  return await response.json();
 }
 
 async function deleteFactura(id) {
@@ -49,14 +46,17 @@ async function deleteFactura(id) {
   return data.success;
 }
 
+async function updateFacturaPago(id, metodoPago) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'updatePago', id, metodoPago })
+  });
+  return await response.json();
+}
+
 // ─── Inicialización ───────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    await openDB();
-  } catch (err) {
-    console.warn('IndexedDB no disponible, usando localStorage como respaldo.', err);
-    useLocalStorageFallback();
-  }
   initItems();
   initSwipe();
   initModalCloseOnOverlay();
@@ -75,15 +75,13 @@ function showPanel(id, btn) {
 function initItems() {
   document.querySelectorAll('.item[data-price]').forEach(el => {
     const price = parseFloat(el.dataset.price);
-    if (price === 0) return; // "Consultar" — no seleccionable
+    if (price === 0) return;
 
     el.addEventListener('click', e => {
-      // Evitar toggle si se hizo clic en un botón qty
       if (e.target.closest('.qty-btn')) return;
       toggleItem(el);
     });
 
-    // Botones +/-
     const minus = el.querySelector('.qty-btn.minus');
     const plus  = el.querySelector('.qty-btn.plus');
     if (minus) minus.addEventListener('click', e => { e.stopPropagation(); changeQty(el, -1); });
@@ -92,13 +90,61 @@ function initItems() {
 }
 
 function toggleItem(el) {
+  const name = el.dataset.name;
   if (el.classList.contains('selected')) {
     el.classList.remove('selected');
     el.querySelector('.qty-num').textContent = '1';
+    // Limpiar badge de opción si existe
+    const badge = el.querySelector('.option-badge');
+    if (badge) badge.remove();
     selectedItems = selectedItems.filter(i => i.el !== el);
   } else {
-    el.classList.add('selected');
-    selectedItems.push({ el, name: el.dataset.name, price: parseFloat(el.dataset.price), qty: 1 });
+    const options = ITEM_OPTIONS[name];
+    if (options) {
+      // Mostrar selector de opción antes de agregar
+      openOptionModal(el, name, options);
+    } else {
+      el.classList.add('selected');
+      selectedItems.push({ el, name, price: parseFloat(el.dataset.price), qty: 1, option: null });
+    }
+  }
+  updateCartBtn();
+}
+
+// ─── Modal de opciones ────────────────────────
+function openOptionModal(el, name, options) {
+  const modal = document.getElementById('modal-opciones');
+  document.getElementById('opciones-title').textContent = name;
+  const container = document.getElementById('opciones-list');
+  container.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-option';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      selectOption(el, opt);
+      closeModal('modal-opciones');
+    };
+    container.appendChild(btn);
+  });
+  openModal('modal-opciones');
+}
+
+function selectOption(el, option) {
+  el.classList.add('selected');
+  // Mostrar badge de opción en el item
+  let badge = el.querySelector('.option-badge');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.className = 'option-badge';
+    el.querySelector('.item-qty').before(badge);
+  }
+  badge.textContent = option;
+  const existing = selectedItems.find(i => i.el === el);
+  if (existing) {
+    existing.option = option;
+  } else {
+    selectedItems.push({ el, name: el.dataset.name, price: parseFloat(el.dataset.price), qty: 1, option });
   }
   updateCartBtn();
 }
@@ -123,7 +169,6 @@ function updateCartBtn() {
 // ─── Carrito / Factura previa ─────────────────
 function openCartModal() {
   renderFacturaPrevia();
-  // Restaurar botones de acción normales
   document.querySelector('#modal-factura .invoice-actions').innerHTML = `
     <button class="btn-gold"    onclick="confirmarPedido()">✦ Confirmar Pedido</button>
     <button class="btn-outline" onclick="closeModal('modal-factura')">Seguir agregando</button>
@@ -157,56 +202,68 @@ function confirmarPedido() {
   if (subtotal >= 40) {
     openModal('modal-redes');
   } else {
-    finalizarPedido(false);
+    openPagoModal(false);
   }
 }
 
-function applyDiscount()  { closeModal('modal-redes'); finalizarPedido(true);  }
-function skipDiscount()   { closeModal('modal-redes'); finalizarPedido(false); }
+function applyDiscount()  { closeModal('modal-redes'); openPagoModal(true);  }
+function skipDiscount()   { closeModal('modal-redes'); openPagoModal(false); }
 
-async function finalizarPedido(withDiscount) {
+// ─── Modal de método de pago ──────────────────
+function openPagoModal(withDiscount) {
+  const modal = document.getElementById('modal-pago');
+  document.getElementById('pago-efectivo').onclick = () => {
+    closeModal('modal-pago');
+    finalizarPedido(withDiscount, 'efectivo');
+  };
+  document.getElementById('pago-transferencia').onclick = () => {
+    closeModal('modal-pago');
+    finalizarPedido(withDiscount, 'transferencia');
+  };
+  openModal('modal-pago');
+}
+
+async function finalizarPedido(withDiscount, metodoPago) {
   const now      = new Date();
   const subtotal = selectedItems.reduce((s, i) => s + i.price * i.qty, 0);
   const discount = withDiscount ? +(subtotal * 0.05).toFixed(2) : 0;
   const total    = +(subtotal - discount).toFixed(2);
 
   const invoice = {
-    date:     now.toISOString(),
-    items:    selectedItems.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+    date:       now.toISOString(),
+    items:      selectedItems.map(i => ({ name: i.name, price: i.price, qty: i.qty, option: i.option || null })),
     subtotal,
     discount,
-    total
+    total,
+    metodoPago
   };
 
-  // Guardar en IndexedDB
   try {
     await saveFactura(invoice);
   } catch (err) {
-    console.warn('Error guardando en IndexedDB, usando localStorage:', err);
-    const stored = JSON.parse(localStorage.getItem('cafecito_facturas') || '[]');
-    stored.push({ ...invoice, id: Date.now() });
-    localStorage.setItem('cafecito_facturas', JSON.stringify(stored));
+    console.warn('Error guardando factura:', err);
   }
 
   mostrarFacturaFinal(invoice);
 
-  // Limpiar selección
   selectedItems.forEach(i => {
     i.el.classList.remove('selected');
     i.el.querySelector('.qty-num').textContent = '1';
+    const badge = i.el.querySelector('.option-badge');
+    if (badge) badge.remove();
   });
   selectedItems = [];
   updateCartBtn();
 }
 
 function mostrarFacturaFinal(invoice) {
-  const { linesHtml, subtotal } = buildLinesHtml(invoice.items.map(i => ({...i, el: null})));
+  const { linesHtml } = buildLinesHtml(invoice.items);
   const discountHtml = invoice.discount > 0
     ? `<div class="invoice-discount">
          <span>Descuento 5% ✦ redes sociales</span>
          <span>− ${formatPrice(invoice.discount)}</span>
-       </div>`
-    : '';
+       </div>` : '';
+  const pagoIcon = invoice.metodoPago === 'efectivo' ? '💵' : '📲';
 
   document.getElementById('factura-content').innerHTML = `
     <div class="invoice-header">
@@ -220,6 +277,7 @@ function mostrarFacturaFinal(invoice) {
       <span class="invoice-total-label">Total</span>
       <span class="invoice-total-amount">${formatPrice(invoice.total)}</span>
     </div>
+    <div class="invoice-pago">${pagoIcon} Pago: <strong>${invoice.metodoPago}</strong></div>
     <p class="invoice-saved-note">✦ Factura guardada en el historial ✦</p>
   `;
 
@@ -228,6 +286,62 @@ function mostrarFacturaFinal(invoice) {
   `;
 
   openModal('modal-factura');
+}
+
+// ─── Resumen del día ──────────────────────────
+function buildResumenDia(facturas) {
+  const hoy = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const facturasHoy = facturas.filter(inv => {
+    const d = new Date(inv.date);
+    return d.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' }) === hoy;
+  });
+
+  if (facturasHoy.length === 0) return '';
+
+  const totalGeneral    = facturasHoy.reduce((s, i) => s + i.total, 0);
+  const totalEfectivo   = facturasHoy.filter(i => i.metodoPago === 'efectivo').reduce((s, i) => s + i.total, 0);
+  const totalTransfer   = facturasHoy.filter(i => i.metodoPago === 'transferencia').reduce((s, i) => s + i.total, 0);
+  const cantidadFacturas = facturasHoy.length;
+
+  return `
+    <div class="resumen-dia">
+      <div class="resumen-dia-title">✦ Resumen de Hoy ✦</div>
+      <div class="resumen-dia-grid">
+        <div class="resumen-dia-item">
+          <span class="resumen-dia-label">💵 Efectivo</span>
+          <span class="resumen-dia-value">${formatPrice(totalEfectivo)}</span>
+        </div>
+        <div class="resumen-dia-item">
+          <span class="resumen-dia-label">📲 Transferencia</span>
+          <span class="resumen-dia-value">${formatPrice(totalTransfer)}</span>
+        </div>
+        <div class="resumen-dia-item">
+          <span class="resumen-dia-label">🧾 Facturas</span>
+          <span class="resumen-dia-value">${cantidadFacturas}</span>
+        </div>
+        <div class="resumen-dia-item resumen-dia-total">
+          <span class="resumen-dia-label">Total del día</span>
+          <span class="resumen-dia-value">${formatPrice(totalGeneral)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildResumenDiaCompacto(facturasDia) {
+  const total         = facturasDia.reduce((s, i) => s + i.total, 0);
+  const efectivo      = facturasDia.filter(i => i.metodoPago === 'efectivo').reduce((s, i) => s + i.total, 0);
+  const transferencia = facturasDia.filter(i => i.metodoPago === 'transferencia').reduce((s, i) => s + i.total, 0);
+  const cantidad      = facturasDia.length;
+
+  return `
+    <div class="resumen-dia-compacto">
+      <span>🧾 ${cantidad} facturas</span>
+      <span>💵 ${formatPrice(efectivo)}</span>
+      <span>📲 ${formatPrice(transferencia)}</span>
+      <span class="resumen-compacto-total">Total: ${formatPrice(total)}</span>
+    </div>
+  `;
 }
 
 // ─── Historial ────────────────────────────────
@@ -239,7 +353,6 @@ async function renderHistorial() {
   try {
     facturas = await getAllFacturas();
   } catch (err) {
-    console.error('Error cargando facturas:', err);
     container.innerHTML = '<p class="historial-empty">Error al cargar el historial.</p>';
     return;
   }
@@ -249,7 +362,6 @@ async function renderHistorial() {
     return;
   }
 
-  // Agrupar por día
   const byDay = {};
   facturas.forEach(inv => {
     const d   = new Date(inv.date);
@@ -258,21 +370,26 @@ async function renderHistorial() {
     byDay[key].push(inv);
   });
 
-  // Ordenar días descendente
   const days = Object.keys(byDay).sort((a, b) => {
     const parse = s => { const [d,m,y] = s.split('/'); return new Date(y, m-1, d); };
     return parse(b) - parse(a);
   });
 
-  let html = '';
+  // Resumen de hoy arriba de todo
+  let html = buildResumenDia(facturas);
+
   days.forEach(day => {
     html += `<div class="historial-day">
-      <div class="historial-day-title">📅 ${day}</div>`;
+      <div class="historial-day-title">📅 ${day}</div>
+      ${buildResumenDiaCompacto(byDay[day])}
+    `;
     byDay[day].slice().reverse().forEach(inv => {
-      const t       = new Date(inv.date);
-      const timeStr = t.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-      const preview = inv.items.map(i => i.name).join(', ');
-      const invoiceId = inv._id || inv.id; // MongoDB usa _id
+      const t         = new Date(inv.date);
+      const timeStr   = t.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      const preview   = inv.items.map(i => i.option ? `${i.name} (${i.option})` : i.name).join(', ');
+      const invoiceId = inv._id || inv.id;
+      const pagoIcon  = inv.metodoPago === 'transferencia' ? '📲' : '💵';
+      const pagoLabel = inv.metodoPago || 'sin registrar';
       html += `
         <div class="historial-invoice-card">
           <div class="historial-invoice-content" onclick="showHistorialDetail('${invoiceId}')">
@@ -281,8 +398,12 @@ async function renderHistorial() {
               <span class="historial-invoice-total">${formatPrice(inv.total)}</span>
             </div>
             <div class="historial-invoice-items">${preview}</div>
+            <div class="historial-invoice-pago">${pagoIcon} ${pagoLabel}</div>
           </div>
-          <button class="historial-delete-btn" onclick="eliminarFactura('${invoiceId}')">✕</button>
+          <div class="historial-card-actions">
+            <button class="historial-pago-btn" onclick="cambiarPago('${invoiceId}', '${inv.metodoPago || ''}', event)">💳</button>
+            <button class="historial-delete-btn" onclick="eliminarFactura('${invoiceId}')">✕</button>
+          </div>
         </div>`;
     });
     html += `</div>`;
@@ -291,14 +412,23 @@ async function renderHistorial() {
   container.innerHTML = html;
 }
 
+async function cambiarPago(id, pagoActual, e) {
+  e.stopPropagation();
+  const nuevo = pagoActual === 'efectivo' ? 'transferencia' : 'efectivo';
+  try {
+    await updateFacturaPago(id, nuevo);
+    renderHistorial();
+  } catch (err) {
+    alert('Error al actualizar el método de pago');
+  }
+}
+
 async function showHistorialDetail(id) {
   let inv = null;
   try {
     const all = await getAllFacturas();
     inv = all.find(i => i._id === id || i.id === id);
-  } catch (err) {
-    console.error('Error cargando factura:', err);
-  }
+  } catch (err) { return; }
   if (!inv) return;
 
   const { linesHtml } = buildLinesHtml(inv.items);
@@ -306,8 +436,8 @@ async function showHistorialDetail(id) {
     ? `<div class="invoice-discount">
          <span>Descuento 5% ✦ redes sociales</span>
          <span>− ${formatPrice(inv.discount)}</span>
-       </div>`
-    : '';
+       </div>` : '';
+  const pagoIcon = inv.metodoPago === 'efectivo' ? '💵' : '📲';
 
   document.getElementById('historial-detail-content').innerHTML = `
     <div class="invoice-header">
@@ -321,30 +451,34 @@ async function showHistorialDetail(id) {
       <span class="invoice-total-label">Total</span>
       <span class="invoice-total-amount">${formatPrice(inv.total)}</span>
     </div>
+    <div class="invoice-pago">${pagoIcon} Pago: <strong>${inv.metodoPago || 'sin registrar'}</strong></div>
+    <div class="pago-change-row">
+      <button class="btn-outline" onclick="cambiarPagoDesdeDetalle('${inv._id || inv.id}', '${inv.metodoPago || ''}')">
+        Cambiar a ${inv.metodoPago === 'efectivo' ? 'transferencia 📲' : 'efectivo 💵'}
+      </button>
+    </div>
   `;
 
   openModal('modal-historial-detail');
 }
 
-async function clearHistorial() {
-  if (!confirm('¿Seguro que quieres borrar todo el historial de facturas?')) return;
+async function cambiarPagoDesdeDetalle(id, pagoActual) {
+  const nuevo = pagoActual === 'efectivo' ? 'transferencia' : 'efectivo';
   try {
-    await deleteAllFacturas();
-  } catch {
-    localStorage.removeItem('cafecito_facturas');
+    await updateFacturaPago(id, nuevo);
+    closeModal('modal-historial-detail');
+    renderHistorial();
+  } catch (err) {
+    alert('Error al actualizar el método de pago');
   }
-  renderHistorial();
 }
 
 async function eliminarFactura(id) {
   if (!confirm('¿Seguro que deseas eliminar esta factura?')) return;
   try {
     const success = await deleteFactura(id);
-    if (success) {
-      renderHistorial();
-    }
+    if (success) renderHistorial();
   } catch (err) {
-    console.error('Error eliminando factura:', err);
     alert('Error al eliminar la factura');
   }
 }
@@ -356,9 +490,10 @@ function buildLinesHtml(items) {
   items.forEach(item => {
     const lineTotal = item.price * item.qty;
     subtotal += lineTotal;
+    const optionHtml = item.option ? `<span class="invoice-line-option">(${item.option})</span>` : '';
     linesHtml += `
       <div class="invoice-line">
-        <span class="invoice-line-name">${item.name}</span>
+        <span class="invoice-line-name">${item.name}${optionHtml}</span>
         <span class="invoice-line-qty">×${item.qty}</span>
         <span class="invoice-line-price">${formatPrice(lineTotal)}</span>
       </div>`;
@@ -416,9 +551,4 @@ function initSwipe() {
       if (prev && prev.classList.contains('tab')) prev.click();
     }
   }, { passive: true });
-}
-
-// ─── Fallback a localStorage (por si IndexedDB falla) ─
-function useLocalStorageFallback() {
-  window._usingLocalStorage = true;
 }
