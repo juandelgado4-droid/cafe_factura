@@ -801,6 +801,186 @@ body::before {
   opacity: 0.5;
 }
 
+/* ===== OPCIONES DE ITEM ===== */
+.opciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.btn-option {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-option:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+.option-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: var(--gold);
+  color: var(--bg);
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-right: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  vertical-align: middle;
+}
+.invoice-line-option {
+  font-style: italic;
+  opacity: 0.75;
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+
+/* ===== MÉTODO DE PAGO ===== */
+.pago-options {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  justify-content: center;
+}
+.btn-pago {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  padding: 20px 30px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  flex: 1;
+}
+.btn-pago:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+.btn-pago span { font-size: 0.8rem; }
+
+/* ===== PAGO EN FACTURA ===== */
+.invoice-pago {
+  text-align: center;
+  margin-top: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  opacity: 0.85;
+}
+.pago-change-row {
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* ===== HISTORIAL PAGO ===== */
+.historial-invoice-pago {
+  font-size: 0.78rem;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-top: 3px;
+  font-style: italic;
+}
+.historial-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.historial-pago-btn {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.historial-pago-btn:hover { background: var(--gold); color: var(--bg); }
+
+/* ===== RESUMEN DEL DÍA ===== */
+.resumen-dia {
+  background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.05));
+  border: 1px solid var(--gold);
+  padding: 18px 20px;
+  margin: 16px 0 20px;
+}
+.resumen-dia-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 14px;
+}
+.resumen-dia-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.resumen-dia-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(212,175,55,0.06);
+  padding: 10px 12px;
+}
+.resumen-dia-item.resumen-dia-total {
+  grid-column: 1 / -1;
+  background: rgba(212,175,55,0.15);
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.resumen-dia-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: var(--text-muted, #aaa);
+}
+.resumen-dia-value {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--gold);
+}
+.resumen-dia-total .resumen-dia-value {
+  font-size: 1.05rem;
+}
+
+/* ── Resumen compacto por día ── */
+.resumen-dia-compacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-left: 2px solid var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: var(--gold);
+  opacity: 0.85;
+}
+.resumen-compacto-total {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
   .tab { padding: 14px 18px; font-size: 0.78rem; letter-spacing: 0.15em; }
