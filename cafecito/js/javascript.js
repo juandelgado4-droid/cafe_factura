@@ -13,7 +13,6 @@ const ITEM_OPTIONS = {
   'Sodas saborizadas': ['Frutas rojas', 'Amarillas', 'Verdes'],
   'Sándwich de pollo': ['Con gratinar', 'Sin gratinar'],
   'Cappuccino': ['Caliente', 'Frío (+$1.000)'],
-  'Frappe de Café': ['Frío (+$1.000)', 'Caliente'],
   'Latte': ['Caliente', 'Frío (+$1.000)'],
   'Té Chai': ['Caliente', 'Frío (+$1.000)'],
   'Mochaccino': ['Caliente', 'Frío (+$1.000)'],
