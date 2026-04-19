@@ -14,14 +14,16 @@ const ITEM_OPTIONS = {
   'Limonada': ['Natural', 'Brasilera', 'Coco', 'Cherry', 'Maracuyá'],
   'Sodas saborizadas': ['Frutas rojas', 'Amarillas', 'Verdes'],
   'Sándwich de pollo': ['Con gratinar', 'Sin gratinar'],
+  'Cappuccino': ['Caliente', 'Frío (+$1.000)'],
   'Frappe de Café': ['Frío (+$1.000)', 'Caliente'],
-  'Mochaccino': ['Frío (+$1.000)', 'Caliente'],
-  'Latte con Leche': ['Frío (+$1.000)', 'Caliente'],
-  'Milo Frío': ['Frío (+$1.000)', 'Caliente'],
+  'Latte': ['Caliente', 'Frío (+$1.000)'],
+  'Té Chai': ['Caliente', 'Frío (+$1.000)'],
+  'Mochaccino': ['Caliente', 'Frío (+$1.000)'],
+  'Milo': ['Caliente', 'Frío (+$1.000)'],
 };
 
 // Items que tienen recargo de $1.000 cuando se elige "Frío"
-const FRIO_RECARGO = ['Frappe de Café', 'Mochaccino', 'Latte con Leche', 'Milo Frío'];
+const FRIO_RECARGO = ['Cappuccino', 'Frappe de Café', 'Latte', 'Té Chai', 'Mochaccino', 'Milo'];
 
 // ─── MongoDB con Netlify Functions ────────────
 const API_URL = '/api/facturas';
