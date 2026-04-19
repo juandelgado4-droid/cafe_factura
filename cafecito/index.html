@@ -558,6 +558,16 @@
   </div>
 </div>
 
+<!-- ===== MODAL: AGREGAR ITEM ===== -->
+<div class="modal-overlay" id="modal-add-item">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-add-item')">✕</button>
+    <p class="modal-title">Agregar item</p>
+    <input type="text" id="add-item-search" class="add-item-search" placeholder="Buscar..." oninput="filterAddItems(this.value)">
+    <div id="add-item-list" class="add-item-list"></div>
+  </div>
+</div>
+
 <script src="js/javascript.js"></script>
 </body>
 </html>

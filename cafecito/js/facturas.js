@@ -34,11 +34,28 @@ async function deleteFactura(id) {
   return result.deletedCount > 0;
 }
 
+async function updateFacturaItems(id, items, subtotal, discount, total) {
+  const client = await connectToDatabase();
+  let objectId;
+  try { objectId = new ObjectId(String(id)); } catch(e) { return false; }
+  const result = await client.db(DB_NAME).collection(COLLECTION_NAME).updateOne(
+    { _id: objectId },
+    { $set: { items, subtotal, discount, total } }
+  );
+  return result.modifiedCount > 0;
+}
+
 async function updateFacturaPago(id, metodoPago) {
   const client = await connectToDatabase();
   const db = client.db(DB_NAME);
+  let objectId;
+  try {
+    objectId = new ObjectId(String(id));
+  } catch(e) {
+    return false;
+  }
   const result = await db.collection(COLLECTION_NAME).updateOne(
-    { _id: new ObjectId(id) },
+    { _id: objectId },
     { $set: { metodoPago } }
   );
   return result.modifiedCount > 0;
@@ -72,6 +89,11 @@ exports.handler = async (event) => {
       }
       if (action === 'updatePago') {
         const success = await updateFacturaPago(id, metodoPago);
+        return { statusCode: 200, headers, body: JSON.stringify({ success }) };
+      }
+      if (action === 'updateItems') {
+        const { items, subtotal, discount, total } = body;
+        const success = await updateFacturaItems(id, items, subtotal, discount, total);
         return { statusCode: 200, headers, body: JSON.stringify({ success }) };
       }
     }
