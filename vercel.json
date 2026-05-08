@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "outputDirectory": "cafecito",
+  "rewrites": [
+    {
+      "source": "/api/facturas",
+      "destination": "/api/facturas.js"
+    }
+  ]
+}
