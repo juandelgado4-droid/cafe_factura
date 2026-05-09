@@ -36,13 +36,15 @@ async function deleteFactura(id) {
   return result.deletedCount > 0;
 }
 
-async function updateFacturaItems(id, items, subtotal, discount, total) {
+async function updateFacturaItems(id, items, subtotal, discount, total, date) {
   const client = await connectToDatabase();
   let objectId;
   try { objectId = new ObjectId(String(id)); } catch (e) { return false; }
+  const updateData = { items, subtotal, discount, total };
+  if (date) updateData.date = date;
   const result = await client.db(DB_NAME).collection(COLLECTION_NAME).updateOne(
     { _id: objectId },
-    { $set: { items, subtotal, discount, total } }
+    { $set: updateData }
   );
   return result.modifiedCount > 0;
 }
@@ -80,7 +82,7 @@ module.exports = async function handler(req, res) {
 
     // POST → guardar / actualizar pago / actualizar items / eliminar
     if (req.method === 'POST') {
-      const { action, invoice, id, metodoPago, items, subtotal, discount, total } = req.body || {};
+      const { action, invoice, id, metodoPago, items, subtotal, discount, total, date } = req.body || {};
 
       if (action === 'save') {
         const result = await saveFactura(invoice);
@@ -93,7 +95,7 @@ module.exports = async function handler(req, res) {
       }
 
       if (action === 'updateItems') {
-        const success = await updateFacturaItems(id, items, subtotal, discount, total);
+        const success = await updateFacturaItems(id, items, subtotal, discount, total, date);
         return res.status(200).json({ success });
       }
 

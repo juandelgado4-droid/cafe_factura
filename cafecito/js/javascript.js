@@ -74,8 +74,8 @@ async function updateFacturaPago(id, metodoPago) {
   const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'updatePago', id, metodoPago }) });
   return await r.json();
 }
-async function updateFacturaItems(id, items, subtotal, discount, total) {
-  const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'updateItems', id, items, subtotal, discount, total }) });
+async function updateFacturaItems(id, items, subtotal, discount, total, date) {
+  const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'updateItems', id, items, subtotal, discount, total, date }) });
   return await r.json();
 }
 
@@ -390,7 +390,9 @@ function renderDetailModal() {
     <div class="invoice-header">
       <div class="invoice-title">✦ Cafecito o Miedo ✦</div>
       <div class="invoice-sub">Editar Factura</div>
-      <div class="invoice-date">${formatDateTime(new Date(inv.date))}</div>
+      <div class="invoice-date" style="margin-top:8px;">
+        <input type="datetime-local" class="menu-search-input" style="font-size:0.75rem; padding:6px; width:auto; text-align:center; display:inline-block;" value="${getDatetimeLocalString(inv.date)}" onchange="window._editInvoice.date = new Date(this.value).toISOString()">
+      </div>
     </div>
     ${linesHtml}
     <div style="display:flex; gap:10px;">
@@ -483,7 +485,7 @@ function openAddItemModal() {
 async function guardarEdicion() {
   const inv = window._editInvoice;
   try {
-    await updateFacturaItems(window._editInvoiceId, inv.items, inv.subtotal, inv.discount, inv.total);
+    await updateFacturaItems(window._editInvoiceId, inv.items, inv.subtotal, inv.discount, inv.total, inv.date);
     closeModal('modal-historial-detail');
     await renderHistorial();
   } catch (e) { alert('Error al guardar los cambios'); }
@@ -586,6 +588,13 @@ function formatPrice(val) {
 function formatDateTime(date) {
   return date.toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
     + ' — ' + date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+}
+
+function getDatetimeLocalString(dateStr) {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '';
+  const pad = n => n.toString().padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
