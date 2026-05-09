@@ -386,12 +386,35 @@ function renderDetailModal() {
       </div>`;
   });
 
+  const invDate = new Date(inv.date);
+  const pad = n => n.toString().padStart(2, '0');
+  const dStr = `${invDate.getFullYear()}-${pad(invDate.getMonth() + 1)}-${pad(invDate.getDate())}`;
+  let h24 = invDate.getHours();
+  let ampm = h24 >= 12 ? 'PM' : 'AM';
+  let h12 = h24 % 12;
+  if (h12 === 0) h12 = 12;
+  const mStr = invDate.getMinutes();
+
+  let hOptions = '', mOptions = '';
+  for(let i=1; i<=12; i++) hOptions += `<option value="${i}" ${i === h12 ? 'selected' : ''}>${pad(i)}</option>`;
+  for(let i=0; i<60; i++) mOptions += `<option value="${i}" ${i === mStr ? 'selected' : ''}>${pad(i)}</option>`;
+
   document.getElementById('historial-detail-content').innerHTML = `
     <div class="invoice-header">
       <div class="invoice-title">✦ Cafecito o Miedo ✦</div>
       <div class="invoice-sub">Editar Factura</div>
-      <div class="invoice-date" style="margin-top:8px;">
-        <input type="datetime-local" class="menu-search-input" style="font-size:0.75rem; padding:6px; width:auto; text-align:center; display:inline-block;" value="${getDatetimeLocalString(inv.date)}" onchange="window._editInvoice.date = new Date(this.value).toISOString()">
+      <div class="invoice-date" style="margin-top:8px; display:flex; justify-content:center; gap:4px; align-items:center;">
+        <input type="date" id="edit-date-input" class="menu-search-input" style="font-size:0.75rem; padding:4px; width:auto; text-align:center;" value="${dStr}" onchange="updateEditDate()">
+        <select id="edit-hour-input" class="menu-search-input" style="font-size:0.75rem; padding:4px; width:auto;" onchange="updateEditDate()">
+          ${hOptions}
+        </select>:
+        <select id="edit-minute-input" class="menu-search-input" style="font-size:0.75rem; padding:4px; width:auto;" onchange="updateEditDate()">
+          ${mOptions}
+        </select>
+        <select id="edit-ampm-input" class="menu-search-input" style="font-size:0.75rem; padding:4px; width:auto;" onchange="updateEditDate()">
+          <option value="AM" ${ampm === 'AM' ? 'selected' : ''}>AM</option>
+          <option value="PM" ${ampm === 'PM' ? 'selected' : ''}>PM</option>
+        </select>
       </div>
     </div>
     ${linesHtml}
@@ -590,11 +613,19 @@ function formatDateTime(date) {
     + ' — ' + date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 }
 
-function getDatetimeLocalString(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return '';
-  const pad = n => n.toString().padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+function updateEditDate() {
+  const dVal = document.getElementById('edit-date-input').value;
+  if (!dVal) return;
+  const [y, m, d] = dVal.split('-');
+  let h = parseInt(document.getElementById('edit-hour-input').value, 10);
+  const min = parseInt(document.getElementById('edit-minute-input').value, 10);
+  const ampm = document.getElementById('edit-ampm-input').value;
+  
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  
+  const newDate = new Date(y, m - 1, d, h, min);
+  window._editInvoice.date = newDate.toISOString();
 }
 
 function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
