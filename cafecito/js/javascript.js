@@ -535,9 +535,10 @@ function openExtraModalEdit() {
 
 function confirmExtra() {
   const nameInput = document.getElementById('extra-name').value.trim() || 'Extra';
-  const priceInput = parseFloat(document.getElementById('extra-price').value);
+  const priceVal = document.getElementById('extra-price').value;
+  const priceInput = priceVal === '' ? 0 : parseFloat(priceVal);
   
-  if (isNaN(priceInput) || priceInput <= 0) {
+  if (isNaN(priceInput)) {
     alert("Por favor ingresa un valor válido.");
     return;
   }
