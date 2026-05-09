@@ -728,6 +728,21 @@
     </div>
   </div>
 
+  <!-- ===== MODAL: AGREGAR EXTRA ===== -->
+  <div class="modal-overlay" id="modal-extra">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('modal-extra')">✕</button>
+      <p class="modal-title">✦ Agregar Extra ✦</p>
+      <div class="extra-form">
+        <input type="text" id="extra-name" class="menu-search-input" placeholder="Descripción (ej. Domicilio, Propina...)" style="margin-bottom:14px;">
+        <input type="number" id="extra-price" class="menu-search-input" placeholder="Valor en K (ej. 5 para $5.000)" step="0.1">
+        <div class="redes-btn-row">
+          <button class="btn-gold" onclick="confirmExtra()" style="width:100%;">✦ Agregar Valor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/javascript.js"></script>
 </body>
 

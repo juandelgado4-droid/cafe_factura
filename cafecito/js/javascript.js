@@ -197,7 +197,7 @@ function openCartModal() {
 }
 
 function renderFacturaPrevia() {
-  const { linesHtml, subtotal } = buildLinesHtml(selectedItems);
+  const { linesHtml, subtotal } = buildLinesHtml(selectedItems, true);
   document.getElementById('factura-content').innerHTML = `
     <div class="invoice-header">
       <div class="invoice-title">✦ Cafecito o Miedo ✦</div>
@@ -205,6 +205,9 @@ function renderFacturaPrevia() {
       <div class="invoice-date">${formatDateTime(new Date())}</div>
     </div>
     ${linesHtml}
+    <div style="display:flex; justify-content:center; margin-top:14px;">
+      <button class="btn-outline" style="font-size:0.6rem; padding: 6px 14px; min-width:auto;" onclick="openExtraModalCart()">➕ Agregar Valor Extra</button>
+    </div>
     <div class="invoice-total-row">
       <span class="invoice-total-label">Subtotal</span>
       <span class="invoice-total-amount">${formatPrice(subtotal)}</span>
@@ -236,9 +239,12 @@ async function finalizarPedido(withDiscount) {
   };
   try { await saveFactura(invoice); } catch (e) { console.warn(e); }
   selectedItems.forEach(i => {
-    i.el.classList.remove('selected');
-    i.el.querySelector('.qty-num').textContent = '1';
-    const b = i.el.querySelector('.option-badge'); if (b) b.remove();
+    if (i.el && i.el.classList) {
+      i.el.classList.remove('selected');
+      const q = i.el.querySelector('.qty-num');
+      if (q) q.textContent = '1';
+      const b = i.el.querySelector('.option-badge'); if (b) b.remove();
+    }
   });
   selectedItems = [];
   updateCartBtn();
@@ -387,7 +393,10 @@ function renderDetailModal() {
       <div class="invoice-date">${formatDateTime(new Date(inv.date))}</div>
     </div>
     ${linesHtml}
-    <button class="btn-add-item" onclick="openAddItemModal()">+ Agregar item</button>
+    <div style="display:flex; gap:10px;">
+      <button class="btn-add-item" style="flex:1;" onclick="openAddItemModal()">+ Agregar item</button>
+      <button class="btn-add-item" style="flex:1; border-style:solid;" onclick="openExtraModalEdit()">+ Agregar extra</button>
+    </div>
     ${discount > 0 ? `<div class="invoice-discount"><span>Descuento 5% ✦ redes</span><span>− ${formatPrice(discount)}</span></div>` : ''}
     <div class="edit-discount-row">
       <label class="edit-discount-label">
@@ -495,15 +504,78 @@ async function eliminarFactura(id) {
   catch (e) { alert('Error al eliminar la factura'); }
 }
 
-function buildLinesHtml(items) {
+function buildLinesHtml(items, showRemoveExtra = false) {
   let subtotal = 0, linesHtml = '';
-  items.forEach(item => {
+  items.forEach((item, idx) => {
     const lineTotal = item.price * item.qty;
     subtotal += lineTotal;
     const optHtml = item.option ? `<span class="invoice-line-option">(${item.option})</span>` : '';
-    linesHtml += `<div class="invoice-line"><span class="invoice-line-name">${item.name}${optHtml}</span><span class="invoice-line-qty">×${item.qty}</span><span class="invoice-line-price">${formatPrice(lineTotal)}</span></div>`;
+    const removeBtn = (showRemoveExtra && item.isExtra) ? `<button style="background:none; border:none; color:var(--gold); font-size:12px; margin-left:8px; cursor:pointer;" onclick="removeExtraCart(${idx})">✕</button>` : '';
+    linesHtml += `<div class="invoice-line"><span class="invoice-line-name">${item.name}${optHtml}${removeBtn}</span><span class="invoice-line-qty">×${item.qty}</span><span class="invoice-line-price">${formatPrice(lineTotal)}</span></div>`;
   });
   return { linesHtml, subtotal };
+}
+
+// ─── Extras ──────────────────────────────
+let extraContext = 'cart';
+
+function openExtraModalCart() {
+  extraContext = 'cart';
+  document.getElementById('extra-name').value = 'Extra';
+  document.getElementById('extra-price').value = '';
+  openModal('modal-extra');
+}
+
+function openExtraModalEdit() {
+  extraContext = 'edit';
+  document.getElementById('extra-name').value = 'Extra';
+  document.getElementById('extra-price').value = '';
+  openModal('modal-extra');
+}
+
+function confirmExtra() {
+  const nameInput = document.getElementById('extra-name').value.trim() || 'Extra';
+  const priceInput = parseFloat(document.getElementById('extra-price').value);
+  
+  if (isNaN(priceInput) || priceInput <= 0) {
+    alert("Por favor ingresa un valor válido.");
+    return;
+  }
+  
+  closeModal('modal-extra');
+  
+  if (extraContext === 'cart') {
+    const dummyEl = document.createElement('div');
+    dummyEl.innerHTML = '<span class="qty-num">1</span>';
+    selectedItems.push({
+      el: dummyEl,
+      name: nameInput,
+      basePrice: priceInput,
+      price: priceInput,
+      qty: 1,
+      options: [],
+      isExtra: true
+    });
+    updateCartBtn();
+    renderFacturaPrevia();
+  } else if (extraContext === 'edit') {
+    window._editInvoice.items.push({
+      name: nameInput,
+      price: priceInput,
+      qty: 1,
+      option: null,
+      options: [],
+      basePrice: priceInput,
+      isExtra: true
+    });
+    renderDetailModal();
+  }
+}
+
+function removeExtraCart(idx) {
+  selectedItems.splice(idx, 1);
+  updateCartBtn();
+  renderFacturaPrevia();
 }
 
 function formatPrice(val) {
