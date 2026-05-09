@@ -688,6 +688,186 @@ body::before {
   width: 50%;
 }
 
+/* ===== MENU SEARCH ===== */
+.menu-search-wrapper {
+  margin: 0 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 8px 0;
+  background: var(--black);
+}
+.menu-search-input {
+  width: 100%;
+  padding: 12px 18px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 3px;
+  color: var(--text-cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.menu-search-input::placeholder {
+  color: var(--gold);
+  opacity: 0.45;
+  font-style: italic;
+}
+.menu-search-input:focus {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.1);
+  box-shadow: 0 0 16px rgba(201,168,76,0.15);
+}
+
+/* ===== ADD ITEM MODAL ===== */
+.add-item-search {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 3px;
+  color: var(--text-cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.add-item-search::placeholder {
+  color: var(--gold);
+  opacity: 0.4;
+  font-style: italic;
+}
+.add-item-search:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(201,168,76,0.12);
+}
+.add-item-list {
+  max-height: 50vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.btn-add-item-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--text-cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.92rem;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  border-radius: 2px;
+}
+.btn-add-item-option:hover {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gold);
+}
+.add-item-price {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.btn-add-item {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  background: transparent;
+  border: 1px dashed rgba(201,168,76,0.35);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  border-radius: 2px;
+}
+.btn-add-item:hover {
+  background: rgba(201,168,76,0.1);
+  border-color: var(--gold);
+}
+
+/* edit detail styles */
+.edit-line {
+  flex-wrap: wrap;
+}
+.edit-line-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.edit-line-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.edit-qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dark);
+  background: rgba(201,168,76,0.1);
+  color: var(--gold);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.edit-qty-btn:hover {
+  background: rgba(201,168,76,0.25);
+  border-color: var(--gold);
+}
+.edit-qty-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  color: var(--gold-bright);
+  min-width: 24px;
+  text-align: center;
+}
+.edit-remove-btn {
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+  margin-left: 4px;
+}
+.edit-remove-btn:hover {
+  background: rgba(201,168,76,0.2);
+  border-color: var(--gold);
+}
+.edit-discount-row {
+  margin: 12px 0;
+  text-align: center;
+}
+.edit-discount-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--gold);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.edit-save-row {
+  margin-top: 16px;
+  display: flex;
+}
+
 /* ===== HISTORIAL ===== */
 .historial-day { margin-bottom: 32px; }
 

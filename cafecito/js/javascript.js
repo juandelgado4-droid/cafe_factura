@@ -303,7 +303,14 @@ async function renderHistorial() {
   let html = buildResumenDia(facturas);
   days.forEach(day => {
     html += `<div class="historial-day"><div class="historial-day-title">📅 ${day}</div>${buildResumenDiaCompacto(byDay[day])}`;
-    byDay[day].slice().reverse().forEach(inv => {
+    // Sort: unpaid first, then by time descending within each group
+    const sorted = byDay[day].slice().reverse().sort((a, b) => {
+      const aPagado = a.metodoPago === 'efectivo' || a.metodoPago === 'transferencia';
+      const bPagado = b.metodoPago === 'efectivo' || b.metodoPago === 'transferencia';
+      if (aPagado !== bPagado) return aPagado ? 1 : -1; // unpaid first
+      return new Date(b.date) - new Date(a.date); // most recent first
+    });
+    sorted.forEach(inv => {
       const timeStr = new Date(inv.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
       const preview = inv.items.map(i => i.option ? `${i.name} (${i.option})` : i.name).join(', ');
       const invoiceId = String(inv._id || inv.id);
@@ -534,5 +541,37 @@ function filterAddItems(query) {
   const q = query.toLowerCase();
   document.querySelectorAll(".btn-add-item-option").forEach(btn => {
     btn.style.display = btn.querySelector("span").textContent.toLowerCase().includes(q) ? "" : "none";
+  });
+}
+
+function filterMenuItems(panelId, query) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const q = query.toLowerCase().trim();
+
+  // Show/hide individual items
+  panel.querySelectorAll('.item[data-name]').forEach(item => {
+    const name = (item.dataset.name || '').toLowerCase();
+    const text = (item.querySelector('.item-name')?.textContent || '').toLowerCase();
+    const match = !q || name.includes(q) || text.includes(q);
+    item.style.display = match ? '' : 'none';
+  });
+
+  // Show/hide cat-blocks based on whether they have visible items
+  panel.querySelectorAll('.cat-block').forEach(block => {
+    const hasVisible = block.querySelector('.item[data-name]:not([style*="display: none"])');
+    block.style.display = hasVisible ? '' : 'none';
+  });
+
+  // Show/hide category headers and their grids
+  panel.querySelectorAll('.category-header').forEach(header => {
+    const grid = header.nextElementSibling;
+    if (!grid || !grid.classList.contains('cat-grid')) {
+      header.style.display = '';
+      return;
+    }
+    const hasVisibleBlock = grid.querySelector('.cat-block:not([style*="display: none"])');
+    header.style.display = hasVisibleBlock ? '' : 'none';
+    grid.style.display = hasVisibleBlock ? '' : 'none';
   });
 }

@@ -29,6 +29,11 @@
     <!-- ============================================================ -->
     <div id="bebidas" class="menu-panel active">
 
+      <!-- 🔍 BUSCADOR -->
+      <div class="menu-search-wrapper">
+        <input type="text" id="menu-search-bebidas" class="menu-search-input" placeholder="🔍 Buscar bebida…" oninput="filterMenuItems('bebidas', this.value)">
+      </div>
+
       <!-- ☕ CAFÉS -->
       <div class="category-header">
         <span class="line"></span>
@@ -400,6 +405,11 @@
     <!-- COMIDAS PANEL                                                 -->
     <!-- ============================================================ -->
     <div id="comidas" class="menu-panel">
+
+      <!-- 🔍 BUSCADOR -->
+      <div class="menu-search-wrapper">
+        <input type="text" id="menu-search-comidas" class="menu-search-input" placeholder="🔍 Buscar comida…" oninput="filterMenuItems('comidas', this.value)">
+      </div>
 
       <!-- 🧀 PARA PICAR -->
       <div class="category-header">
